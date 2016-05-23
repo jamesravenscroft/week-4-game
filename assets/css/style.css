@@ -90,9 +90,9 @@ h6 {
   height: 1.2vw;
   width: 14%;
   float: left;
-  border: 2px solid black;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border: 0.1vw solid black;
+  border-top-left-radius: 0.5vw;
+  border-bottom-left-radius: 0.5vw;
   background: black;
 }
 
@@ -102,17 +102,19 @@ h6 {
   height: 1.2vw;
   width: 86%;
   border: 0.3vw solid black;
-  border-radius: 10px;
-  float: right;
+  border-radius: 0.6vw;
+  float: left;
 }
 
 .hp-bar-color-helper {
   position: absolute;
   background: black;
   height: 1.2vw;
-  width: 20%;
+  width: 90%;
   top: 0;
   left: 10%;
+  border: 0.3vw solid black;
+  border-radius: 0.5vw;
 }
 
 /* Character selected */

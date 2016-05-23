@@ -143,6 +143,8 @@ $(document).ready(function() {
 	var characterHP;
 	var enemyHPTotal;
 	var enemyHP;
+	var characterPercentage;
+	var enemyPercentage;
 	var characterHPText;
 	var enemyHPText;
 	$('.position-characters').on('click', '.battle-pokemon:eq(1)', function() {
@@ -164,9 +166,13 @@ $(document).ready(function() {
 		// Calculate damage
 		characterHP -= enemyAttack;
 		enemyHP -= characterAttack;
+		// Calculate percentage
+		characterPercentage = 5.4 + 80.6 * characterHP/characterHPTotal;
+		enemyPercentage = 5.4 + 80.6 * enemyHP/enemyHPTotal;
 		// See if either reaches to 0
 		if (characterHP <= 0) {
 			characterHP = 0;
+			characterPercentage = 5.4;
 			// Show fainted pokemon
 			$('.battle-pokemon:eq(0)').children('img').attr('src','assets/images/fainted' + character + '.png');
 			// Rotate fainted pokemon
@@ -182,6 +188,7 @@ $(document).ready(function() {
 		}
 		if (enemyHP <= 0) {
 			enemyHP = 0;
+			enemyPercentage = 5.4;
 			// Show fainted pokemon
 			$('.battle-pokemon:eq(1)').children('img').attr('src','assets/images/fainted' + enemy + '.png');
 			// Rotate fainted pokemon
@@ -195,6 +202,13 @@ $(document).ready(function() {
 			h1.text(enemy + ' Has Been Defeated!');
 			$('.battlefield').append(h1);
 		}
+		// Update hp bar
+		console.log(characterPercentage);
+		console.log(enemyPercentage);
+		$('.battle-pokemon:eq(0).hp-bar-color').css({'width': String(characterPercentage) + '%'});
+		$('.battle-pokemon:eq(1).hp-bar-color').css({'width': String(enemyPercentage) + '%'});
+		console.log($('.battle-pokemon:eq(0).hp-bar-color').css('width'));
+		console.log($('.battle-pokemon:eq(1).hp-bar-color').css('width'));
 		// Update text
 		characterHPText.text(characterHP + ' / ' + characterHPTotal);
 		enemyHPText.text(enemyHP + ' / ' + enemyHPTotal)
