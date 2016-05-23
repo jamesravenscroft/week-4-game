@@ -1,9 +1,136 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  position: fixed;
+  background-image: url(../images/background.png);
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+header {
+  position: relative;
+  height: 618px;
+  width: 1680px;
+  margin: 10px auto;
+}
+
+img {
+  width: 100%;
+}
+
+h1, h6 {
+  color: white;
+}
+
+h1 {
+  clear: both;
+  font-size: 80px;
+}
+
+h6 {
+  font-size: 20px;
+  padding-left: 2%;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Choose your character */
+
+.position-characters {
+  position: absolute;
+  height: 40%;
+  width: 100%;
+  bottom: 10%;
+  left: 0;
+}
+
+.characters {
+  position: relative;
+  height: 100%;
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.characters-pokemon {
+  position: relative;
+  width: 25%;
+  float: left;
+}
+
+.hp-bar {
+  position: relative;
+  width: 80%;
+  height: 5%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.hp-bar h6 {
+  color: orange;
+  border: 2px solid black;
+  border-radius: 10px;
+  background: black;
+}
+
+.hp-bar-color {
+  position: absolute;
+  top: 20%;
+  right: 2%;
+  background: green;
+  height: 60%;
+  width: 80%;
+  border: 2px solid green;
+  border-radius: 6px;
+}
+
+/* Character selected */
+.selected-character {
+  position: relative;
+  height: 100%;
+  width: 40%;
+  margin: 0 auto;
+  text-align: center;
+  float: left;
+}
+
+.unselected-characters {
+  position: relative;
+  height: 100%;
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+  float: right;
+}
+
+.selected-character-pokemon {
+  position: relative;
+  width: 37.5%;
+  float: left;
+  margin-left: 31.25%;
+}
+
+.unselected-character-pokemon {
+  position: relative;
+  width: 25%;
+  float: left;
+}
+
+.unselected-character-pokemon:first-child {
+  margin-left: 12.5%;
 }
