@@ -10,12 +10,19 @@ body {
 
 body {
   position: fixed;
-  background-image: url(../images/background.png);
+  background: url(../images/background.png);
   background-position: center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
+  /* No highlight on text */
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently not supported by any browser */
 }
 
 .wrapper {
@@ -34,14 +41,20 @@ img {
   width: 100%;
 }
 
-h1, h6 {
+h1, h2, h6 {
   color: white;
 }
 
 h1 {
   clear: both;
   /*font-size: 80px;*/
-  font-size: 4vw;
+  font-size: 3.5vw;
+}
+
+h2{
+  clear: both;
+  /*font-size: 80px;*/
+  font-size: 2vw;
 }
 
 h6 {
@@ -57,7 +70,7 @@ h6 {
   position: absolute;
   height: 40%;
   width: 100%;
-  bottom: 10%;
+  bottom: 5%;
   left: 0;
 }
 
@@ -182,6 +195,12 @@ h6 {
   text-align: center;
 }
 
+.battle-pokemon {
+  position: relative;
+  width: 50%;
+  float: left;
+}
+
 .sideline-pokemon {
   position: relative;
   width: 50%;
@@ -203,19 +222,22 @@ h6 {
   height: 0.6vw;
 }
 
-.battle-pokemon {
-  position: relative;
-  width: 50%;
-  float: left;
-}
-
-.rotated {
+.rotated-character {
     transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
     -khtml-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
+}
+
+.rotated-enemy {
+    transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -khtml-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
 }
 
 .rotated-flipped-character {
@@ -234,4 +256,68 @@ h6 {
     -o-transform: scale(-1, 1) rotate(-90deg);
     -khtml-transform: scale(-1, 1) rotate(-90deg);
     -ms-transform: scale(-1, 1) rotate(-90deg);
+}
+
+/* Character animation */
+
+@keyframes attackRight {
+  0%   {left: 0px;}
+  25%  {left: 200px;}
+  75%  {left: 50px}
+  100% {left: 100px;}
+}
+
+.animation-character {
+  animation-name: attackRight;
+  animation-duration: 0.5s; 
+  animation-timing-function: ease-out; 
+  animation-delay: 0s;
+  animation-direction: normal; 
+}
+
+/* Enemy animation */
+
+@keyframes attackLeft {
+  0%   {right: 0px;}
+  25%  {right: 200px;}
+  75%  {right: 50px}
+  100% {right: 100px;}
+}
+
+.animation-enemy {
+  animation-name: attackLeft;
+  animation-duration: 0.5s; 
+  animation-timing-function: ease-out; 
+  animation-delay: 0s;
+  animation-direction: normal; 
+}
+
+/* Winner */
+.winner {
+  position: relative;
+  text-align: center;
+  font-size: 5vw;
+  color: yellow;
+  text-shadow: 2px 2px blue;
+}
+
+/* Restart */
+.restart {
+  position: relative;
+  display: block;
+  width: 11vw;
+  margin: 0 auto;
+  font-size: 2vw;
+  color: black;
+  background: white;
+  border: 0.2vw solid red;
+  border-top-left-radius: 1.5vw;
+  border-bottom-left-radius: 1.5vw;
+  border-top-right-radius: 1.5vw;
+  border-bottom-right-radius: 1.5vw;
+}
+
+button:hover, button:active, button:focus {
+  box-shadow: inset 0 0 0.3vw red, 0 0 0.3vw red;
+  outline: none;
 }

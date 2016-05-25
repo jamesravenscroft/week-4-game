@@ -1,61 +1,97 @@
-$(document).ready(function() {
+$(document).ready(function () {
 	// Header sizing
 	var fraction = 1/2;
 	$('header').css('height', 618 * fraction + 'px');
 	$('header').css('width', 1680 * fraction + 'px');
 	// Pokemon
-	var character = {
+	var objPokemon = {
 		pokemon: ['Pikachu','Squirtle','Bulbasaur','Charmander'],
 		hp: [120,100,150,180],
 		attack: [8,10,6,4]
 	};
-	// Loop for each pokemon
-	for (var i=0; i<character.pokemon.length; i++) {
-		// Create holder for each pokemon
-		var pokemonHolder = $('<div>');
-		pokemonHolder.addClass('characters-pokemon');
-		pokemonHolder.attr('type',character.pokemon[i]);
-		pokemonHolder.attr('hp',character.hp[i]);
-		pokemonHolder.attr('attack',character.attack[i]);
-		pokemonHolder.append('<img src="assets/images/' + character.pokemon[i] + '.png"/>');
-		// Create level
-		var level = $('<h6>');
-		level.text('Lv30');
-		pokemonHolder.append(level);
-		// Create hp bar text
-		var hp = $('<h6>');
-		hp.text('HP');
-		// Create color bar helper
-		var colorHelper = $('<div>');
-		colorHelper.addClass('hp-bar-color-helper');
-		// Create hp bar
-		var hpBar = $('<div>');
-		hpBar.addClass('hp-bar');
-		// Create color bar
-		var color = $('<div>');
-		color.addClass('hp-bar-color');
-		// Append hp and color back to hp bar
-		hpBar.append(colorHelper);
-		hpBar.append(hp);
-		hpBar.append(color);
-		// Append hp bar to pokemon holder
-		pokemonHolder.append(hpBar);
-		// Create number hp
-		var numberHP = $('<h6>');
-		numberHP.text(character.hp[i] + ' / ' + character.hp[i]);
-		pokemonHolder.append(numberHP);
-		// Append holder to characters
-		$('.characters').append(pokemonHolder);
+	var pokemon;
+	var character;
+	// Battle variables
+	var enemy;
+	var characterName;
+	var enemyName;
+	var characterAttack;
+	var characterHP;
+	var characterHPTotal;
+	var enemyAttack;
+	var enemyHP;
+	var enemyHPTotal;
+	var characterPercentage;
+	var enemyPercentage;
+	var characterHPText;
+	var enemyHPText;
+	var battleTimes;
+
+	// After screen loads start game
+	start();
+
+	// Function to allow for restart
+	function start() {
+		// Initialize variables
+		battleTimes = 0;
+		// Fix background and get rid of div and buttons
+		$('body').css('background', 'url(assets/images/background.png)');
+		$('body .winner').remove();
+		$('body button').remove();
+		// Remove position-characters
+		$('.battlefield').remove();
+		// Create characters
+		var div = $('<div>');
+		div.addClass('characters')
+		$('.position-characters').append(div);
+		// Loop for each pokemon
+		for (var i=0; i<objPokemon.pokemon.length; i++) {
+			// Create holder for each pokemon
+			var pokemonHolder = $('<div>');
+			pokemonHolder.addClass('characters-pokemon');
+			pokemonHolder.attr('type',objPokemon.pokemon[i]);
+			pokemonHolder.attr('hp',objPokemon.hp[i]);
+			pokemonHolder.attr('attack',objPokemon.attack[i]);
+			pokemonHolder.append('<img src="assets/images/' + objPokemon.pokemon[i] + '.png"/>');
+			// Create level
+			var level = $('<h6>');
+			level.text('Lv30');
+			pokemonHolder.append(level);
+			// Create hp bar text
+			var hp = $('<h6>');
+			hp.text('HP');
+			// Create color bar helper
+			var colorHelper = $('<div>');
+			colorHelper.addClass('hp-bar-color-helper');
+			// Create hp bar
+			var hpBar = $('<div>');
+			hpBar.addClass('hp-bar');
+			// Create color bar
+			var color = $('<div>');
+			color.addClass('hp-bar-color');
+			// Append hp and color back to hp bar
+			hpBar.append(colorHelper);
+			hpBar.append(hp);
+			hpBar.append(color);
+			// Append hp bar to pokemon holder
+			pokemonHolder.append(hpBar);
+			// Create number hp
+			var numberHP = $('<h6>');
+			numberHP.text(objPokemon.hp[i] + ' / ' + objPokemon.hp[i]);
+			pokemonHolder.append(numberHP);
+			// Append holder to characters
+			$('.characters').append(pokemonHolder);
+		}
+		// Show message
+		var h1 = $('<h1>');
+		h1.text('Choose Your Character');
+		$('.characters').append(h1);
 	}
-	// Show message
-	var h1 = $('<h1>');
-	h1.text('Choose Your Character');
-	$('.characters').append(h1);
 
 	// When character is clicked
 	$('.position-characters').on('click', '.characters-pokemon', function() {
 		// Remove 'choose your character'
-		h1.remove();
+		$('.characters h1').remove();
 		// Make positioning class for character selection
 		var selected = $('<div>');
 		selected.addClass('selected-character');
@@ -68,11 +104,11 @@ $(document).ready(function() {
 		// Remove characters-pokemon class
 		$('.characters').children().removeClass('characters-pokemon');
 		// Add selected pokemon to selected
-		var pokemon = $(this); 
-		selected.append(pokemon);
+		character = $(this); 
+		selected.append(character);
 		// Flip selected pokemon if bulbasaur or charmander
-		if (pokemon.attr('type') == 'Bulbasaur' || pokemon.attr('type') == 'Charmander') {
-			pokemon.children("img").addClass('flipped');
+		if (character.attr('type') == 'Bulbasaur' || character.attr('type') == 'Charmander') {
+			character.children("img").addClass('flipped');
 		}
 		// Add others to unselected
 		var otherPokemon = $(".characters").children();
@@ -100,7 +136,7 @@ $(document).ready(function() {
 	$('.position-characters').on('click', '.unselected-character-pokemon', function() {
 		// Remove 'your character'
 		$('.selected-character h1').remove();
-		// Show 'choose your opponent'
+		// Remove 'choose your opponent'
 		$('.unselected-characters h1').remove();
 		// Make positioning class for sideline characters
 		var sidelines = $('<div>');
@@ -115,9 +151,9 @@ $(document).ready(function() {
 		$('.selected-character').children().removeClass('selected-character-pokemon');
 		$('.unselected-characters').children().removeClass('unselected-character-pokemon');
 		// Add selected character and selected enemy to battlefield
-		var pokemon = $(".selected-character").children();
-		var enemy = $(this);
-		battlefield.append(pokemon);
+		character = $(".selected-character").children();
+		enemy = $(this);
+		battlefield.append(character);
 		battlefield.append(enemy);
 		// Add others characters to sidelines
 		var otherPokemon = $(".unselected-characters").children();
@@ -132,86 +168,190 @@ $(document).ready(function() {
 		var h1 = $('<h1>');
 		h1.text('Click On Enemy To Attack');
 		battlefield.append(h1);
+		// Start the battle
+		battle();
 	});
-	// When enemy is clicked
-	var count = 0;
-	var character;
-	var enemy;
-	var characterAttack;
-	var enemyAttack;
-	var characterHPTotal;
-	var characterHP;
-	var enemyHPTotal;
-	var enemyHP;
-	var characterPercentage;
-	var enemyPercentage;
-	var characterHPText;
-	var enemyHPText;
-	$('.position-characters').on('click', '.battle-pokemon:eq(1)', function() {
-		// Remove 'click on enemy to attack'
-		$('.battlefield h1').remove();
+
+	function battle() {
+		// Turn off sideline pokemon click
+		$('.position-characters').off('click', '.sideline-pokemon');
+		// Check if winner
+		// When enemy is clicked attack until someone loses
+		var count = 0;
 		// Initialize variables
-		if (count == 0) {
-			character = $('.battle-pokemon:eq(0)').attr('type');
-			enemy = $('.battle-pokemon:eq(1)').attr('type');
-			characterAttack = $('.battle-pokemon:eq(0)').attr('attack');
-			enemyAttack = $('.battle-pokemon:eq(1)').attr('attack');
+		if (battleTimes == 0) {
 			characterHPTotal = $('.battle-pokemon:eq(0)').attr('hp');
 			characterHP = characterHPTotal;
-			enemyHPTotal = $('.battle-pokemon:eq(1)').attr('hp');
-			enemyHP = enemyHPTotal;
-			characterHPText = $('.battle-pokemon:eq(0)').children('h6:eq(1)');
-			enemyHPText = $('.battle-pokemon:eq(1)').children('h6:eq(1)');
 		}
-		// Calculate damage
-		characterHP -= enemyAttack;
-		enemyHP -= characterAttack;
-		// Calculate percentage
-		characterPercentage = 4 + 81 * characterHP/characterHPTotal;
-		enemyPercentage = 4 + 81 * enemyHP/enemyHPTotal;
-		// See if either reaches to 0
-		if (characterHP <= 0) {
-			characterHP = 0;
-			characterPercentage = 4;
-			// Show fainted pokemon
-			$('.battle-pokemon:eq(0)').children('img').attr('src','assets/images/fainted' + character + '.png');
-			// Rotate fainted pokemon
-			if (character == 'Bulbasaur' || character == 'Charmander') {
-				$('.battle-pokemon:eq(0)').children("img").addClass('rotated-flipped-character');
-			} else {
-				$('.battle-pokemon:eq(0)').children("img").addClass('rotated');
+		$('.position-characters').on('click', '.battle-pokemon:eq(1)', function() {
+			// Remove 'click on enemy to attack' or 'pokemon defeated'
+			$('.battlefield h1').remove();
+			if (count == 0) {
+				characterName = $('.battle-pokemon:eq(0)').attr('type');
+				enemyName = $('.battle-pokemon:eq(1)').attr('type');
+				characterAttack = Number($('.battle-pokemon:eq(0)').attr('attack'));
+				originalCharacterAttack = characterAttack;
+				enemyAttack = $('.battle-pokemon:eq(1)').attr('attack');
+				enemyHPTotal = $('.battle-pokemon:eq(1)').attr('hp');
+				enemyHP = enemyHPTotal;
+				characterHPText = $('.battle-pokemon:eq(0)').children('h6:eq(1)');
+				enemyHPText = $('.battle-pokemon:eq(1)').children('h6:eq(1)');
 			}
-			// Show 'player has been defeated'
-			var h1 = $('<h1>');
+			
+			// Animation logic to show animation when character is alive
+			if (characterHP != 0) {
+				// Calculate character damage on enemy
+		  	enemyHP -= characterAttack;
+		  	// Calculate percentage
+				enemyPercentage = 4 + 81 * enemyHP/enemyHPTotal;
+				// See if enemyHP reaches 0
+				if (enemyHP <= 0) {
+					$('.position-characters').off('click', '.battle-pokemon:eq(1)');
+					enemyHP = 0;
+					enemyPercentage = 4;
+					window.setTimeout(function() {
+						defeated('enemy',1,0,1); // last two inputs are to select the proper pokemon for rotation
+					}, 500);
+				}
+				// Show CSS animation character if character is not dead
+			  $('.battle-pokemon:eq(0)').addClass('animation-character');
+			  $('.battle-pokemon:eq(0)').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+			    $('.battle-pokemon:eq(0)').removeClass('animation-character');
+			    // Update hp bar
+			    $('.battle-pokemon:eq(1) .hp-bar-color').css('width', String(enemyPercentage) + '%');
+			    // Change color to yellow if less than or equal to 50%
+					// and red if less than or equal to 20%
+			    if (enemyPercentage <= 20) {
+						$('.battle-pokemon:eq(1) .hp-bar-color').css('background', 'red');
+					} else if (enemyPercentage<= 50) {
+						$('.battle-pokemon:eq(1) .hp-bar-color').css('background', 'yellow');
+					}
+			    // Update text
+			    enemyHPText.text(enemyHP + ' / ' + enemyHPTotal);
+			    if (enemyHP != 0) {
+			    	// Calculate enemy damage on character
+	    			characterHP -= enemyAttack;
+	    			// Calculate percentage
+						characterPercentage = 4 + 81 * characterHP/characterHPTotal;
+						// See if characterHP reaches 0
+						if (characterHP <= 0) {
+							$('.position-characters').off('click', '.battle-pokemon:eq(1)');
+							characterHP = 0;
+							characterPercentage = 4;
+							window.setTimeout(function() {
+								defeated('character',0,2,3); // last two inputs are to select the proper pokemon for rotation
+							}, 500);
+						}
+				    // Show CSS animation enemy if enemy is not dead
+					  $('.battle-pokemon:eq(1)').addClass('animation-enemy');
+					  $('.battle-pokemon:eq(1)').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+					    $('.battle-pokemon:eq(1)').removeClass('animation-enemy');
+					    // Update hp bar
+							$('.battle-pokemon:eq(0) .hp-bar-color').css('width', String(characterPercentage) + '%');
+							// Change color to yellow if less than or equal to 50%
+							// and red if less than or equal to 20%
+					    if (characterPercentage <= 20) {
+								$('.battle-pokemon:eq(0) .hp-bar-color').css('background', 'red');
+							} else if (characterPercentage<= 50) {
+								$('.battle-pokemon:eq(0) .hp-bar-color').css('background', 'yellow');
+							}
+							// Update text
+							characterHPText.text(characterHP + ' / ' + characterHPTotal);
+					  });
+					}
+			  });
+			}
+			// Update character damge and count for next round
+			characterAttack += originalCharacterAttack;
+			count++;
+		});
+		battleTimes++;
+	}
+	// Function for defeated after if statments
+	function defeated(person,num,first,second) {
+		var show;
+		var rotater;
+		var h1 = $('<h1>');
+		// Turn click handler off
+		$('.position-characters').off('click', '.battle-pokemon:eq(' + num + ')');
+		if (person == 'character') {
+			show = characterName;
+			rotater = 'character';
 			h1.text('Player Has Been Defeated!');
-			$('.battlefield').append(h1);
+			// Red battlefield
+			$('body').css('background', 'linear-gradient(rgba(255, 0, 0, 0.45), rgba(255, 0, 0, 0.45)),url(assets/images/background.png)');
+			$('.battle-pokemon:eq(1)').css('opacity','0.4');
+			// Show 'you lose'
+			var loser = $('<div>');
+			loser.addClass('winner');
+			loser.text('Sorry! You Lose!');
+			$('body').append(loser);
+			// Show 'restart' button
+			var restart = $('<button>');
+			restart.addClass('restart');
+			restart.text('RESTART');
+			$('body').append(restart);
+			$('body').on('click', '.restart', function() {
+				$('body').off('click', '.restart');
+				start();
+			});
+		} else {
+			show = enemyName;
+			h1.text(show + ' Has Been Defeated!');
 		}
-		if (enemyHP <= 0) {
-			enemyHP = 0;
-			enemyPercentage = 4;
-			// Show fainted pokemon
-			$('.battle-pokemon:eq(1)').children('img').attr('src','assets/images/fainted' + enemy + '.png');
-			// Rotate fainted pokemon
-			if (enemy == 'Pikachu' || enemy == 'Squirtle') {
-				$('.battle-pokemon:eq(1)').children("img").addClass('rotated-flipped-enemy');
-			} else {
-				$('.battle-pokemon:eq(1)').children("img").addClass('rotated');
-			}
-			// Show 'enemy has been defeated'
-			var h1 = $('<h1>');
-			h1.text(enemy + ' Has Been Defeated!');
-			$('.battlefield').append(h1);
+		// Show 'has been defeated'
+		$('.battlefield').append(h1);
+		// Show fainted pokemon
+		$('.battle-pokemon:eq(' + num + ')').children('img').attr('src','assets/images/fainted' + show + '.png');
+		// Rotate fainted pokemon
+		if (show == objPokemon.pokemon[first] || show == objPokemon.pokemon[second]) {
+			$('.battle-pokemon:eq(' + num + ')').children("img").addClass('rotated-flipped-' + person);
+		} else {
+			$('.battle-pokemon:eq(' + num + ')').children("img").addClass('rotated-' + person);
 		}
-		// Update hp bar
-		console.log(characterPercentage);
-		console.log(enemyPercentage);
-		$('.battle-pokemon:eq(0) .hp-bar-color').css('width', String(characterPercentage) + '%');
-		$('.battle-pokemon:eq(1) .hp-bar-color').css('width', String(enemyPercentage) + '%');
-		console.log($('.battle-pokemon:eq(0) .hp-bar-color').css('width'));
-		console.log($('.battle-pokemon:eq(1) .hp-bar-color').css('width'));
-		// Update text
-		characterHPText.text(characterHP + ' / ' + characterHPTotal);
-		enemyHPText.text(enemyHP + ' / ' + enemyHPTotal)
-		count++;
-	});
+		// Break game if all pokemon are defeated
+		if (battleTimes == 3) {
+			// Remove sidelines because there are no more pokemon
+			$('.sidelines').remove();
+			// White battlefield
+			$('body').css('background', 'linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),url(assets/images/background.png)');
+			$('.battle-pokemon:eq(1)').css('opacity','0.4');
+			// Show 'you win'
+			var winner = $('<div>');
+			winner.addClass('winner');
+			winner.text('Congratulations! You Win!');
+			$('body').append(winner);
+			// Show 'restart' button
+			var restart = $('<button>');
+			restart.addClass('restart');
+			restart.text('RESTART');
+			$('body').append(restart);
+			$('body').on('click', '.restart', function() {
+				$('body').off('click', '.restart');
+				start();
+			});
+		}
+		// Show 'choose your next opponent'
+		var h2 = $('<h2>');
+		h2.text('Choose Your Next Opponent');
+		$('.sidelines').append(h2);
+		// Clicking sideline pokemon to choose new opponent
+		$('.position-characters').on('click', '.sideline-pokemon', function() {
+			// Remove 'has been defeated'
+			h1.remove();
+			// Remove 'choose your next opponent'
+			h2.remove();
+			// Remove defeated pokemon
+			$('.battle-pokemon:eq(1)').remove();
+			// Change pokemon from sideline to battle pokemon
+			$(this).addClass('battle-pokemon');
+			$(this).removeClass('sideline-pokemon');
+			// Move pokemon to battlefield
+			$('.battlefield').append($(this));
+			// Float right sideline pokemon
+			$('.sideline-pokemon').css('float','right');
+			// Restart battle if more pokemon
+			battle();
+		});
+	}
 });
