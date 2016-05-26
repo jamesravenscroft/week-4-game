@@ -190,6 +190,9 @@ $(document).ready(function () {
 			characterAttack = Number($('.battle-pokemon:eq(0)').attr('attack'));
 			originalCharacterAttack = characterAttack;
 		}
+		// Reinitialize count
+		count = 0;
+		// Enter click battle
 		clickBattle();
 		battleTimes++;
 	}
@@ -284,8 +287,8 @@ $(document).ready(function () {
 							characterHPText.text(characterHP + ' / ' + characterHPTotal);
 							// Show attack message
 							enemyAttackMessage.html(enemyName + ' attacked you for <span style="color:red">' + enemyAttack + '</span> damage.');
-							// Renable click 
-			    		clickBattle()
+							// Renew click if neither player is dead
+							clickBattle()
 					  });
 					}
 			  });

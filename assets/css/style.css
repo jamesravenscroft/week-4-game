@@ -295,6 +295,7 @@ h6 {
   font-size: 5vw;
   color: yellow;
   text-shadow: 2px 2px blue;
+  z-index: 1;
 }
 
 /* Restart */
@@ -311,6 +312,7 @@ h6 {
   border-bottom-left-radius: 1.5vw;
   border-top-right-radius: 1.5vw;
   border-bottom-right-radius: 1.5vw;
+  z-index: 1;
 }
 
 button:hover, button:active, button:focus {
