@@ -302,7 +302,6 @@ h6 {
 .restart {
   position: relative;
   display: block;
-  width: 11vw;
   margin: 0 auto;
   font-size: 2vw;
   color: black;
@@ -397,7 +396,6 @@ button:hover, button:active, button:focus {
     }
     /* Restart */
     .restart {
-      width: 50vw;
       font-size: 10vw;
       border: 1vw solid red;
       border-top-left-radius: 5vw;
