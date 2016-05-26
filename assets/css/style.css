@@ -10,8 +10,9 @@ body {
 
 body {
   position: fixed;
+  text-align: center;
   background: url(../images/background.png);
-  background-position: center;
+  background-position: center bottom;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -28,7 +29,7 @@ body {
 header {
   position: relative;
   max-width: 50%;
-  margin: 10px auto;
+  margin: 1vh auto;
 }
 
 img {
@@ -41,7 +42,6 @@ h1, h2, h3, h6 {
 
 h1 {
   clear: both;
-  /*font-size: 80px;*/
   font-size: 3.5vw;
 }
 
@@ -56,7 +56,6 @@ h3{
 }
 
 h6 {
-  /*font-size: 20px;*/
   font-size: 1vw;
   padding-left: 2%;
   clear: both;
@@ -83,7 +82,6 @@ h6 {
   height: 100%;
   width: 60%;
   margin: 0 auto;
-  text-align: center;
 }
 
 .characters-pokemon {
@@ -141,7 +139,6 @@ h6 {
   height: 100%;
   width: 40%;
   margin: 0 auto;
-  text-align: center;
   float: left;
 }
 
@@ -150,7 +147,6 @@ h6 {
   height: 100%;
   width: 60%;
   margin: 0 auto;
-  text-align: center;
   float: left;
 }
 
@@ -186,8 +182,7 @@ h6 {
   position: absolute;
   height: 50%;
   width: 12.5%;
-  text-align: center;
-  bottom: 0;
+  top: 15%;
   right: 0;
 }
 
@@ -196,7 +191,6 @@ h6 {
   height: 100%;
   width: 30%;
   margin: 0 auto;
-  text-align: center;
 }
 
 .battle-pokemon {
@@ -265,10 +259,10 @@ h6 {
 /* Character animation */
 
 @keyframes attackRight {
-  0%   {left: 0px;}
-  25%  {left: 200px;}
-  75%  {left: 50px}
-  100% {left: 100px;}
+  0%   {left: 0px}
+  25%  {left: 8vw}
+  75%  {left: 2vw}
+  100% {left: 4vw}
 }
 
 .animation-character {
@@ -282,10 +276,10 @@ h6 {
 /* Enemy animation */
 
 @keyframes attackLeft {
-  0%   {right: 0px;}
-  25%  {right: 200px;}
-  75%  {right: 50px}
-  100% {right: 100px;}
+  0%   {right: 0px}
+  25%  {right: 8vw}
+  75%  {right: 2vw}
+  100% {right: 4vw}
 }
 
 .animation-enemy {
@@ -298,8 +292,6 @@ h6 {
 
 /* Winner */
 .winner {
-  position: relative;
-  text-align: center;
   font-size: 5vw;
   color: yellow;
   text-shadow: 2px 2px blue;
@@ -324,4 +316,95 @@ h6 {
 button:hover, button:active, button:focus {
   box-shadow: inset 0 0 0.3vw red, 0 0 0.3vw red;
   outline: none;
+}
+
+/* Media queries for mobile and tablet*/
+@media screen and (max-width: 780px) and (orientation: portrait) {
+    header {
+      position: relative;
+      max-width: 98vw;
+    }
+    .position-characters {
+      height: 36%;
+      bottom: 0%;
+    }
+    /* Choose your character */
+    .characters {
+      width: 100%;
+    }
+    /* Character selected */
+    .selected-character {
+      width: 25%;
+    }
+    .unselected-characters {
+      width: 75%;
+    }
+    .selected-character-pokemon {
+      width: 100%;
+      margin-left: 0%;
+    }
+    .unselected-character-pokemon {
+      width: 33.3%;
+    }
+    .unselected-character-pokemon:first-child {
+      margin-left: 0%;
+    }
+    /* Sidelines / Battle ground */
+    .sidelines {
+      height: 50%;
+      width: 25%;
+      top: -8%;
+    }
+    .battlefield {
+      width: 80%;
+    }
+    /* HP Bar */
+    .hp-bar h6 {
+      height: 2.2vw; 
+      width: 14%;
+    }
+    h6 {
+      font-size: 2vw;
+      padding-left: 1%;
+    }
+    .hp-bar-color {
+      height: 2.2vw;
+      width: 86%;
+    }
+    .hp-bar-color-helper {
+      height: 2.2vw;
+    }
+    .sideline-pokemon h6 {
+      font-size: 1vw;
+      height: 1.1vw;
+    }
+    .sideline-pokemon .hp-bar-color {
+      height: 1.1vw;
+    }
+    .sideline-pokemon .hp-bar-color-helper {
+      height: 1.1vw;
+    }
+    /* Font */
+    h1 {
+      font-size: 8vw;
+    }
+    .winner {
+      font-size: 10vw;
+    }
+    h2 {
+      font-size: 4.5vw;
+    }
+    h3{
+      font-size: 4vw;
+    }
+    /* Restart */
+    .restart {
+      width: 50vw;
+      font-size: 10vw;
+      border: 1vw solid red;
+      border-top-left-radius: 5vw;
+      border-bottom-left-radius: 5vw;
+      border-top-right-radius: 5vw;
+      border-bottom-right-radius: 5vw;
+    }
 }
