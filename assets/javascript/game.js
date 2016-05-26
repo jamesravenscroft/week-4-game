@@ -7,7 +7,7 @@ $(document).ready(function () {
 	var objPokemon = {
 		pokemon: ['Pikachu','Squirtle','Bulbasaur','Charmander'],
 		hp: [120,100,150,180],
-		attack: [8,10,6,4]
+		attack: [8,5,15,25]
 	};
 	var pokemon;
 	var character;
@@ -165,9 +165,9 @@ $(document).ready(function () {
 		battlefield.children().addClass('battle-pokemon');
 		sidelines.children().addClass('sideline-pokemon');
 		// Show 'click on enemy to attack'
-		var h1 = $('<h1>');
-		h1.text('Click On Enemy To Attack');
-		battlefield.append(h1);
+		var h2 = $('<h2>');
+		h2.text('Click On Enemy To Attack');
+		battlefield.append(h2);
 		// Start the battle
 		battle();
 	});
@@ -175,29 +175,34 @@ $(document).ready(function () {
 	function battle() {
 		// Turn off sideline pokemon click
 		$('.position-characters').off('click', '.sideline-pokemon');
-		// Check if winner
 		// When enemy is clicked attack until someone loses
 		var count = 0;
 		// Initialize variables
 		if (battleTimes == 0) {
 			characterHPTotal = $('.battle-pokemon:eq(0)').attr('hp');
 			characterHP = characterHPTotal;
+			characterAttack = Number($('.battle-pokemon:eq(0)').attr('attack'));
+			originalCharacterAttack = characterAttack;
 		}
 		$('.position-characters').on('click', '.battle-pokemon:eq(1)', function() {
 			// Remove 'click on enemy to attack' or 'pokemon defeated'
-			$('.battlefield h1').remove();
+			$('.battlefield h2').remove();
+			$('.battlefield h3').remove();
 			if (count == 0) {
 				characterName = $('.battle-pokemon:eq(0)').attr('type');
 				enemyName = $('.battle-pokemon:eq(1)').attr('type');
-				characterAttack = Number($('.battle-pokemon:eq(0)').attr('attack'));
-				originalCharacterAttack = characterAttack;
 				enemyAttack = $('.battle-pokemon:eq(1)').attr('attack');
 				enemyHPTotal = $('.battle-pokemon:eq(1)').attr('hp');
 				enemyHP = enemyHPTotal;
 				characterHPText = $('.battle-pokemon:eq(0)').children('h6:eq(1)');
 				enemyHPText = $('.battle-pokemon:eq(1)').children('h6:eq(1)');
 			}
-			
+			// Create attack messages
+			var yourAttackMessage = $('<h3>');
+			var enemyAttackMessage = $('<h3>');
+			// Append empty tags
+			$('.battlefield').append(yourAttackMessage);
+			$('.battlefield').append(enemyAttackMessage);
 			// Animation logic to show animation when character is alive
 			if (characterHP != 0) {
 				// Calculate character damage on enemy
@@ -228,6 +233,8 @@ $(document).ready(function () {
 					}
 			    // Update text
 			    enemyHPText.text(enemyHP + ' / ' + enemyHPTotal);
+			    // Show attack message
+					yourAttackMessage.html('You attacked ' + enemyName + ' for <span style="color:red">' + characterAttack + '</span> damage.');
 			    if (enemyHP != 0) {
 			    	// Calculate enemy damage on character
 	    			characterHP -= enemyAttack;
@@ -257,6 +264,8 @@ $(document).ready(function () {
 							}
 							// Update text
 							characterHPText.text(characterHP + ' / ' + characterHPTotal);
+							// Show attack message
+							enemyAttackMessage.html(enemyName + ' attacked you for <span style="color:red">' + enemyAttack + '</span> damage.');
 					  });
 					}
 			  });
@@ -271,13 +280,13 @@ $(document).ready(function () {
 	function defeated(person,num,first,second) {
 		var show;
 		var rotater;
-		var h1 = $('<h1>');
+		var h2 = $('<h2>');
 		// Turn click handler off
 		$('.position-characters').off('click', '.battle-pokemon:eq(' + num + ')');
 		if (person == 'character') {
 			show = characterName;
 			rotater = 'character';
-			h1.text('Player Has Been Defeated!');
+			h2.text('You Have Been Defeated!');
 			// Red battlefield
 			$('body').css('background', 'linear-gradient(rgba(255, 0, 0, 0.45), rgba(255, 0, 0, 0.45)),url(assets/images/background.png)');
 			$('.battle-pokemon:eq(1)').css('opacity','0.4');
@@ -286,21 +295,14 @@ $(document).ready(function () {
 			loser.addClass('winner');
 			loser.text('Sorry! You Lose!');
 			$('body').append(loser);
-			// Show 'restart' button
-			var restart = $('<button>');
-			restart.addClass('restart');
-			restart.text('RESTART');
-			$('body').append(restart);
-			$('body').on('click', '.restart', function() {
-				$('body').off('click', '.restart');
-				start();
-			});
+			// Restart
+			restart();
 		} else {
 			show = enemyName;
-			h1.text(show + ' Has Been Defeated!');
+			h2.text(show + ' Has Been Defeated!');
 		}
 		// Show 'has been defeated'
-		$('.battlefield').append(h1);
+		$('.battlefield').append(h2);
 		// Show fainted pokemon
 		$('.battle-pokemon:eq(' + num + ')').children('img').attr('src','assets/images/fainted' + show + '.png');
 		// Rotate fainted pokemon
@@ -321,26 +323,19 @@ $(document).ready(function () {
 			winner.addClass('winner');
 			winner.text('Congratulations! You Win!');
 			$('body').append(winner);
-			// Show 'restart' button
-			var restart = $('<button>');
-			restart.addClass('restart');
-			restart.text('RESTART');
-			$('body').append(restart);
-			$('body').on('click', '.restart', function() {
-				$('body').off('click', '.restart');
-				start();
-			});
+			// Restart
+			restart();
 		}
 		// Show 'choose your next opponent'
-		var h2 = $('<h2>');
-		h2.text('Choose Your Next Opponent');
-		$('.sidelines').append(h2);
+		var h22 = $('<h2>');
+		h22.text('Choose Your Next Opponent');
+		$('.sidelines').append(h22);
 		// Clicking sideline pokemon to choose new opponent
 		$('.position-characters').on('click', '.sideline-pokemon', function() {
-			// Remove 'has been defeated'
-			h1.remove();
-			// Remove 'choose your next opponent'
-			h2.remove();
+			// Remove all h2 (and h3) from battlefield and sidelines
+			$('.battlefield h2').remove();
+			$('.battlefield h3').remove();
+			$('.sidelines h2').remove();
 			// Remove defeated pokemon
 			$('.battle-pokemon:eq(1)').remove();
 			// Change pokemon from sideline to battle pokemon
@@ -352,6 +347,19 @@ $(document).ready(function () {
 			$('.sideline-pokemon').css('float','right');
 			// Restart battle if more pokemon
 			battle();
+		});
+	}
+	function restart() {
+		// Show 'restart' button
+		var restart = $('<button>');
+		restart.addClass('restart');
+		restart.text('RESTART');
+		$('body').append(restart);
+		// When restart button is pressed
+		$('body').on('click', '.restart', function() {
+			$('body').off('click', '.restart');
+			$('.position-characters .sidelines').remove();
+			start();
 		});
 	}
 });
