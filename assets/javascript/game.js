@@ -35,7 +35,14 @@ $(document).ready(function () {
 		// Initialize variables
 		battleTimes = 0;
 		// Fix background and get rid of div and buttons
-		$('body').css('background', 'url(assets/images/background.png)');
+		$('body').css({
+			'background': 'url(assets/images/background.png)',
+			'background-position': 'center bottom',
+		  '-webkit-background-size': 'cover',
+		  '-moz-background-size': 'cover',
+		  'background-size': 'cover',
+		  '-o-background-size': 'cover'
+		});
 		$('body .winner').remove();
 		$('body button').remove();
 		// Remove position-characters
@@ -172,11 +179,10 @@ $(document).ready(function () {
 		battle();
 	});
 
+	var count = 0;
 	function battle() {
 		// Turn off sideline pokemon click
 		$('.position-characters').off('click', '.sideline-pokemon');
-		// When enemy is clicked attack until someone loses
-		var count = 0;
 		// Initialize variables
 		if (battleTimes == 0) {
 			characterHPTotal = $('.battle-pokemon:eq(0)').attr('hp');
@@ -184,7 +190,14 @@ $(document).ready(function () {
 			characterAttack = Number($('.battle-pokemon:eq(0)').attr('attack'));
 			originalCharacterAttack = characterAttack;
 		}
+		clickBattle();
+		battleTimes++;
+	}
+	// Function for clicking pokemon to battle
+	function clickBattle() {
 		$('.position-characters').on('click', '.battle-pokemon:eq(1)', function() {
+			// Stop click so animation can happen before player clicks again
+			$('.position-characters').off('click', '.battle-pokemon:eq(1)');
 			// Remove 'click on enemy to attack' or 'pokemon defeated'
 			$('.battlefield h2').remove();
 			$('.battlefield h3').remove();
@@ -208,12 +221,15 @@ $(document).ready(function () {
 				// Calculate character damage on enemy
 		  	enemyHP -= characterAttack;
 		  	// Calculate percentage
-				enemyPercentage = 4 + 81 * enemyHP/enemyHPTotal;
+				enemyPercentage = 86 * enemyHP/enemyHPTotal;
 				// See if enemyHP reaches 0
 				if (enemyHP <= 0) {
 					$('.position-characters').off('click', '.battle-pokemon:eq(1)');
 					enemyHP = 0;
-					enemyPercentage = 4;
+					enemyPercentage = 0;
+					// Move enemy backwards so person can click on sideline pokemon
+					$('.battle-pokemon:eq(1)').css('z-index','-1');
+					// Delay defated steps
 					window.setTimeout(function() {
 						defeated('enemy',1,0,1); // last two inputs are to select the proper pokemon for rotation
 					}, 500);
@@ -235,16 +251,18 @@ $(document).ready(function () {
 			    enemyHPText.text(enemyHP + ' / ' + enemyHPTotal);
 			    // Show attack message
 					yourAttackMessage.html('You attacked ' + enemyName + ' for <span style="color:red">' + characterAttack + '</span> damage.');
+			    // Check if either player or enemy died
 			    if (enemyHP != 0) {
 			    	// Calculate enemy damage on character
 	    			characterHP -= enemyAttack;
 	    			// Calculate percentage
-						characterPercentage = 4 + 81 * characterHP/characterHPTotal;
+						characterPercentage = 86 * characterHP/characterHPTotal;
 						// See if characterHP reaches 0
 						if (characterHP <= 0) {
 							$('.position-characters').off('click', '.battle-pokemon:eq(1)');
 							characterHP = 0;
-							characterPercentage = 4;
+							characterPercentage = 0;
+							// Delay defated steps
 							window.setTimeout(function() {
 								defeated('character',0,2,3); // last two inputs are to select the proper pokemon for rotation
 							}, 500);
@@ -266,6 +284,8 @@ $(document).ready(function () {
 							characterHPText.text(characterHP + ' / ' + characterHPTotal);
 							// Show attack message
 							enemyAttackMessage.html(enemyName + ' attacked you for <span style="color:red">' + enemyAttack + '</span> damage.');
+							// Renable click 
+			    		clickBattle()
 					  });
 					}
 			  });
@@ -274,7 +294,6 @@ $(document).ready(function () {
 			characterAttack += originalCharacterAttack;
 			count++;
 		});
-		battleTimes++;
 	}
 	// Function for defeated after if statments
 	function defeated(person,num,first,second) {
@@ -284,22 +303,56 @@ $(document).ready(function () {
 		// Turn click handler off
 		$('.position-characters').off('click', '.battle-pokemon:eq(' + num + ')');
 		if (person == 'character') {
+			// Player is defeated
 			show = characterName;
 			rotater = 'character';
+			// Show 'defeated'
+			h2.css('color','yellow');
 			h2.text('You Have Been Defeated!');
 			// Red battlefield
-			$('body').css('background', 'linear-gradient(rgba(255, 0, 0, 0.45), rgba(255, 0, 0, 0.45)),url(assets/images/background.png)');
+			$('body').css({
+				'background': 'linear-gradient(rgba(255, 0, 0, 0.45), rgba(255, 0, 0, 0.45)),url(assets/images/background.png)',
+				'background-position': 'center bottom',
+			  '-webkit-background-size': 'cover',
+			  '-moz-background-size': 'cover',
+			  'background-size': 'cover',
+			  '-o-background-size': 'cover'
+			});
 			$('.battle-pokemon:eq(1)').css('opacity','0.4');
 			// Show 'you lose'
-			var loser = $('<div>');
+			var loser = $('<h1>');
 			loser.addClass('winner');
 			loser.text('Sorry! You Lose!');
-			$('body').append(loser);
+			$('header').append(loser);
 			// Restart
 			restart();
 		} else {
+			// Enemy is defeated
 			show = enemyName;
+			h2.css('color','yellow')
 			h2.text(show + ' Has Been Defeated!');
+			// Show 'choose your next opponent'
+			var h3 = $('<h3>');
+			h3.text('Choose Your Next Opponent');
+			$('.sidelines').append(h3);
+			// Clicking sideline pokemon to choose new opponent
+			$('.position-characters').on('click', '.sideline-pokemon', function() {
+				// Remove all h2 (and h3) from battlefield and sidelines
+				$('.battlefield h2').remove();
+				$('.battlefield h3').remove();
+				$('.sidelines h3').remove();
+				// Remove defeated pokemon
+				$('.battle-pokemon:eq(1)').remove();
+				// Change pokemon from sideline to battle pokemon
+				$(this).addClass('battle-pokemon');
+				$(this).removeClass('sideline-pokemon');
+				// Move pokemon to battlefield
+				$('.battlefield').append($(this));
+				// Float right sideline pokemon
+				$('.sideline-pokemon').css('float','right');
+				// Restart battle if more pokemon
+				battle();
+			});
 		}
 		// Show 'has been defeated'
 		$('.battlefield').append(h2);
@@ -316,48 +369,33 @@ $(document).ready(function () {
 			// Remove sidelines because there are no more pokemon
 			$('.sidelines').remove();
 			// White battlefield
-			$('body').css('background', 'linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),url(assets/images/background.png)');
+			$('body').css({
+				'background': 'linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),url(assets/images/background.png)',
+				'background-position': 'center bottom',
+			  '-webkit-background-size': 'cover',
+			  '-moz-background-size': 'cover',
+			  'background-size': 'cover',
+			  '-o-background-size': 'cover'
+			});
 			$('.battle-pokemon:eq(1)').css('opacity','0.4');
 			// Show 'you win'
-			var winner = $('<div>');
+			var winner = $('<h1>');
 			winner.addClass('winner');
 			winner.text('Congratulations! You Win!');
-			$('body').append(winner);
+			$('header').append(winner);
 			// Restart
 			restart();
 		}
-		// Show 'choose your next opponent'
-		var h22 = $('<h2>');
-		h22.text('Choose Your Next Opponent');
-		$('.sidelines').append(h22);
-		// Clicking sideline pokemon to choose new opponent
-		$('.position-characters').on('click', '.sideline-pokemon', function() {
-			// Remove all h2 (and h3) from battlefield and sidelines
-			$('.battlefield h2').remove();
-			$('.battlefield h3').remove();
-			$('.sidelines h2').remove();
-			// Remove defeated pokemon
-			$('.battle-pokemon:eq(1)').remove();
-			// Change pokemon from sideline to battle pokemon
-			$(this).addClass('battle-pokemon');
-			$(this).removeClass('sideline-pokemon');
-			// Move pokemon to battlefield
-			$('.battlefield').append($(this));
-			// Float right sideline pokemon
-			$('.sideline-pokemon').css('float','right');
-			// Restart battle if more pokemon
-			battle();
-		});
 	}
 	function restart() {
 		// Show 'restart' button
 		var restart = $('<button>');
 		restart.addClass('restart');
 		restart.text('RESTART');
-		$('body').append(restart);
+		$('header').append(restart);
 		// When restart button is pressed
-		$('body').on('click', '.restart', function() {
-			$('body').off('click', '.restart');
+		$('header').on('click', '.restart', function() {
+			$('header').off('click', '.restart');
 			$('.position-characters .sidelines').remove();
 			start();
 		});
