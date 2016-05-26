@@ -326,10 +326,6 @@ button:hover, button:active, button:focus {
       position: relative;
       max-width: 98vw;
     }
-    .position-characters {
-      height: 36%;
-      bottom: 0%;
-    }
     /* Choose your character */
     .characters {
       width: 100%;
@@ -355,7 +351,7 @@ button:hover, button:active, button:focus {
     .sidelines {
       height: 50%;
       width: 25%;
-      top: -8%;
+      top: 25%;
     }
     .battlefield {
       width: 80%;
