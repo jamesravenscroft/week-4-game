@@ -230,8 +230,8 @@ $(document).ready(function () {
 					$('.position-characters').off('click', '.battle-pokemon:eq(1)');
 					enemyHP = 0;
 					enemyPercentage = 0;
-					// Move enemy backwards so person can click on sideline pokemon
-					$('.battle-pokemon:eq(1)').css('z-index','-1');
+					// Move battlefield backwards so person can click on sideline pokemon
+					$('.battlefield').css('z-index','-1');
 					// Delay defated steps
 					window.setTimeout(function() {
 						defeated('enemy',1,0,1); // last two inputs are to select the proper pokemon for rotation
@@ -353,6 +353,8 @@ $(document).ready(function () {
 				$('.battlefield').append($(this));
 				// Float right sideline pokemon
 				$('.sideline-pokemon').css('float','right');
+				// Move battlefield forwards so person can click on battlefield pokemon
+				$('.battlefield').css('z-index','1');
 				// Restart battle if more pokemon
 				battle();
 			});
