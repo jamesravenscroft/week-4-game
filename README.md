@@ -22,7 +22,7 @@ Win | Lose
 - CSS (media queries)
 - JavaScript/jQuery
 
-## Getting Started
+## How to Play
 
 1. Click on your character
 2. Click on opponent character
@@ -36,8 +36,7 @@ Win | Lose
 
 ## Deployed With
 
-* Heroku
-* PHP
+* Heroku (PHP)
 
 ## Walk throughs of code
 Here is a section of code that selects the 5 recent groups and checks to see if user is any of the groups so a join button can be added if they are not.
