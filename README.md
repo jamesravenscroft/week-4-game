@@ -126,7 +126,7 @@ Most interesting CSS code
 }
 ```
 
-## Authors
+## Author
 
 * **Matthew Bajorek** - [Matthew Bajorek](https://github.com/mattbajorek)
 
@@ -137,4 +137,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Hat tip to anyone who's code was used
-* All those hours spent playing Pokemon as a kid
+* Free code camp for the styling idea
