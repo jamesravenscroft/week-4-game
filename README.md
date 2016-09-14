@@ -39,8 +39,8 @@ Win | Lose
 * Heroku (PHP)
 
 ## Walk throughs of code
-Here is a section of code that selects the 5 recent groups and checks to see if user is any of the groups so a join button can be added if they are not.
 
+Most interesting JavaScript code
 ```
 // Show 'has been defeated'
 $('.battlefield').append(h2);
@@ -53,8 +53,8 @@ if (show == objPokemon.pokemon[first] || show == objPokemon.pokemon[second]) {
     $('.battle-pokemon:eq(' + num + ')').children("img").addClass('rotated-' + person);
 }
 ```
+Most interesting CSS code
 ```
-// CSS
 .rotated-character {
     transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
