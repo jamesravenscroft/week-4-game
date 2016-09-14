@@ -128,7 +128,7 @@ Most interesting CSS code
 
 ## Author
 
-* **Matthew Bajorek** - [Matthew Bajorek](https://github.com/mattbajorek)
+* [Matthew Bajorek](https://www.linkedin.com/in/matthewbajorek)
 
 ## License
 
